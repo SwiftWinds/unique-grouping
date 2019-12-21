@@ -2,7 +2,7 @@
   "name": "unique-grouping",
   "version": "1.0.0",
   "description": "Groups list of individuals in K unique groupings of N groups using simulated annealing",
-  "main": "index.js",
+  "main": "test.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -37,5 +37,16 @@
   "bugs": {
     "url": "https://github.com/SwiftWinds/unique-grouping/issues"
   },
-  "homepage": "https://github.com/SwiftWinds/unique-grouping#readme"
+  "homepage": "https://github.com/SwiftWinds/unique-grouping#readme",
+  "dependencies": {
+    "chunk": "0.0.2",
+    "d3-array": "^2.4.0",
+    "js-combinatorics": "^0.5.4",
+    "npm": "^6.13.4",
+    "random": "^2.1.1",
+    "random-array-index": "^1.1.0",
+    "random-item": "^3.0.0",
+    "simulated-annealing": "^1.0.2",
+    "unique-random-array": "^2.0.0"
+  }
 }
