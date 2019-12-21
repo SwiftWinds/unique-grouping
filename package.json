@@ -42,6 +42,7 @@
     "chunk": "0.0.2",
     "d3-array": "^2.4.0",
     "js-combinatorics": "^0.5.4",
+    "math-sum": "^1.0.0",
     "npm": "^6.13.4",
     "random": "^2.1.1",
     "random-array-index": "^1.1.0",
