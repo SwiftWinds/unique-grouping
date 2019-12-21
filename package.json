@@ -1,0 +1,41 @@
+{
+  "name": "unique-grouping",
+  "version": "1.0.0",
+  "description": "Groups list of individuals in K unique groupings of N groups using simulated annealing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SwiftWinds/unique-grouping.git"
+  },
+  "keywords": [
+    "simulated",
+    "annealing",
+    "simulated",
+    "annealing",
+    "optimization",
+    "group",
+    "students",
+    "such",
+    "that",
+    "everyone",
+    "works",
+    "with",
+    "everyone",
+    "unique",
+    "groupings",
+    "unique",
+    "groupings",
+    "Kirkman's",
+    "schoolgirl",
+    "problem"
+  ],
+  "author": "SwiftWinds",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SwiftWinds/unique-grouping/issues"
+  },
+  "homepage": "https://github.com/SwiftWinds/unique-grouping#readme"
+}
