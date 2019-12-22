@@ -1,4 +1,5 @@
 var chunk = require("chunk");
+var mathSum = require("math-sum");
 var simulatedAnnealing = require("simulated-annealing");
 const { performance } = require("perf_hooks");
 const { boolean } = require("random");
@@ -63,10 +64,11 @@ const test = [
   test1
 ];
 
-console.log(test.find(obj => obj === test2))
-console.log(test.find(obj => obj === test1))
+console.log(test.find(obj => obj === test2));
+console.log(test.find(obj => obj === test1));
 
-console.log(Object.is(test1, test2))
+console.log(Object.is(test1, test2));
 
+console.log(JSON.stringify(test1) === JSON.stringify(test2));
 
-console.log(JSON.stringify(test1) === JSON.stringify(test2))
+console.log(mathSum(3, 5, 6, 1, 3))

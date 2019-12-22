@@ -32,19 +32,16 @@ const UniqueGrouping = (people, groupSize, sessions = 0) => {
 
   // console.log(groups);
 
-  const getEnergy = v => {
-    v.map(group => {
-      const costFunction = group => {
-        const cmb = Combinatorics.combination(group, 2);
-        return (
-          sum(
-            cmb.map(pair => {
-              const decayFunction = (student1, student2) => {
-                const {
-                  timeSinceLastSeen,
-                  timesSeen
-                } = student1.blacklist.find(
-                  student => student.id === student2.id
+  const getEnergy = v =>
+    sum(
+      v.map(group => {
+        const costFunction = group => {
+          const cmb = Combinatorics.combination(group, 2);
+          return sum(
+            ...cmb.map(pair => {
+              const decayFunction = (person1, person2) => {
+                const { timeSinceLastSeen, timesSeen } = person1.blacklist.find(
+                  person => person.id === person2.id
                 );
 
                 return (
@@ -52,40 +49,39 @@ const UniqueGrouping = (people, groupSize, sessions = 0) => {
                 );
               };
 
-              const [student1, student2] = pair;
-              return ALPHA * decayFunction(student1, student2);
-            })
-          ) +
-          BETA * group.length
-        );
-      };
+              const [person1, person2] = pair;
+              return ALPHA * decayFunction(person1, person2);
+            }),
+            BETA * group.length
+          );
+        };
 
-      return costFunction(group);
-    });
-  };
+        return costFunction(group);
+      })
+    );
 
   const newState = x => {
-    const swapStudents = (from, to) => {
-      const student1 = randomArrayIndex(from);
-      const student2 = randomArrayIndex(to);
+    const swapPeople = (from, to) => {
+      const person1 = randomArrayIndex(from);
+      const person2 = randomArrayIndex(to);
 
-      [from[student1], to[student2]] = [to[student2], from[student1]];
+      [from[person1], to[person2]] = [to[person2], from[person1]];
     };
 
-    const moveStudent = (from, to) => {
-      const student = randomItem(from);
+    const movePerson = (from, to) => {
+      const person = randomItem(from);
 
-      to.push(student);
+      to.push(person);
     };
 
     const randomGroup = uniqueRandomArray(x);
 
-    // randomly either swaps two random students from two different groups
-    // or moves one random student to another group
+    // randomly either swaps two random people from two different groups
+    // or moves one random person to another group
     if (random.boolean()) {
-      swapStudents(randomGroup(), randomGroup());
+      swapPeople(randomGroup(), randomGroup());
     } else {
-      moveStudent(randomGroup(), randomGroup());
+      movePerson(randomGroup(), randomGroup());
     }
   };
 
