@@ -6,7 +6,13 @@ import chunk from "chunk";
 
 import Combinatorics from "js-combinatorics";
 
-import sum from "math-sum";
+import empty from "is-empty";
+
+import last from "array-last";
+
+import isPositiveInteger from "validate.io-positive-integer";
+
+import findLastIndex from "lodash.findlastindex";
 
 import d3 from "d3-array";
 import uniqueRandomArray from "unique-random-array";
@@ -19,46 +25,105 @@ const TEMP_MIN = 0.001;
 const COOLING_RATE = 0.001;
 const ALPHA = (BETA = 1);
 
-const UniqueGrouping = (people, groupSize, sessions = 0) => {
-  // const array_chunks = (array, chunk_size) =>
-  //   Array(Math.ceil(array.length / chunk_size))
-  //     .fill()
-  //     .map((_, index) => index * chunk_size)
-  //     .map(begin => array.slice(begin, begin + chunk_size));
-
+const UniqueGrouping = (
+  people = [],
+  history = [],
+  forbiddenPairs = [],
+  groupSize
+) => {
   // creates random groups of size groupSize
   const createRandomGroups = (people, groupSize) =>
     chunk(d3.shuffle(people), groupSize);
 
-  // console.log(groups);
-
   const getEnergy = v =>
-    sum(
-      v.map(group => {
-        const costFunction = group => {
-          const cmb = Combinatorics.combination(group, 2);
-          return sum(
-            ...cmb.map(pair => {
-              const decayFunction = (person1, person2) => {
-                const { timeSinceLastSeen, timesSeen } = person1.blacklist.find(
-                  person => person.id === person2.id
-                );
+    v.reduce((acc, group) => {
+      const cost = (groupSize, decays) =>
+        BETA * groupSize ** 2 +
+        decays.reduce((acc, cur) => acc + cur * ALPHA, 0);
 
-                return (
-                  Math.exp(timeSinceLastSeen / (sessions + 1)) * (timesSeen + 1)
-                );
-              };
+      const decay = (n, t, k) => n / (1 + (t / k) ** 2);
 
-              const [person1, person2] = pair;
-              return ALPHA * decayFunction(person1, person2);
-            }),
-            BETA * group.length
+      const groupSize = group.length;
+      const cmb = Combinatorics.combination(group, 2);
+      const decays = cmb.map(pair => {
+        const compare = (person1, person2) => {
+          const collisions = history.map(grouping =>
+            grouping.filter(
+              // TODO: check if safer to do `.some(person => person.id === person1.id) && .some(person => person.id === person2.id)`?
+              group => group.includes(person1) && group.includes(person2)
+            )
           );
+
+          const lastSeen = empty(collisions)
+            ? -100
+            : collisions.length -
+              1 -
+              findLastIndex(collisions, grouping => !empty(grouping));
+
+          const timesSeen = collisions.filter(grouping => !empty(grouping))
+            .length;
+
+          return { lastSeen, timesSeen };
+          //           const timesSeen = history
+          //             .flat()
+          //             .filter(arr => arr.includes(person1) && arr.includes(person2))
+          //             .length;
+          //           let timesSeen = 0;
+          //           const lastSeen;
+          //           for (let i = history.length; i >= 0; i--) {
+          //             if (
+          //               history[i].some(
+          //                 arr => arr.includes(person1) && arr.includes(person2)
+          //               )
+          //             ) {
+          //               timesSeen++;
+          // lastSeen = i;
+          //             }
+          //           }
         };
 
-        return costFunction(group);
-      })
-    );
+        if (forbiddenPairs.includes(pair)) {
+          return Infinity;
+        }
+
+        const [person1, person2] = pair;
+
+        const { lastSeen, timesSeen } = compare(person1, person2);
+
+        // 1 is added to not multiply or divide by 0
+        return decay(timesSeen + 1, lastSeen, history.length + 1);
+      });
+
+      return acc + cost(groupSize, decays);
+    }, 0);
+
+  // const getEnergy = v =>
+  //   sum(
+  //     v.map(group => {
+  //       const costFunction = group => {
+  //         const cmb = Combinatorics.combination(group, 2);
+  //         return sum(
+  //           ...cmb.map(pair => {
+  //             const decayFunction = (person1, person2) => {
+  //               const { timeSinceLastSeen, timesSeen } = person1.blacklist.find(
+  //                 person => person.id === person2.id
+  //               );
+
+  //               return (
+  //                 Math.exp(timeSinceLastSeen / (sessions + 1)) * (timesSeen + 1)
+  //               );
+  //             };
+
+  //             const [person1, person2] = pair;
+  //             return ALPHA * decayFunction(person1, person2);
+  //           }),
+  //           BETA * group.length
+  //         );
+  //       };
+
+  //       return costFunction(group);
+  //     })
+  //   );
 
   const newState = x => {
     const swapPeople = (from, to) => {
@@ -87,6 +152,18 @@ const UniqueGrouping = (people, groupSize, sessions = 0) => {
 
   // linear decreasing temperature
   const getTemp = prevTemp => prevTemp - COOLING_RATE;
+
+  if (!isPositiveInteger(groupSize)) {
+    throw new Error("groupSize must be an integer greater than 0");
+  }
+
+  if (empty(people)) {
+    if (empty(history)) {
+      throw new Error("Either history or people must be a non-empty array");
+    } else {
+      people = last(history).flat();
+    }
+  }
 
   return SimulatedAnnealing({
     initialState: createRandomGroups(people, groupSize),
