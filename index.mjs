@@ -18,6 +18,8 @@ import d3 from "d3-array";
 
 import clone from "clone";
 
+import equals from "array-equal";
+
 import uniqueRandomArray from "unique-random-array";
 import random from "random";
 import randomArrayIndex from "random-array-index";
@@ -79,7 +81,13 @@ const UniqueGrouping = (
         };
 
         // start of actual code
-        if (forbiddenPairs.includes(pair)) {
+        if (
+          forbiddenPairs.some(
+            forbiddenPair =>
+              equals(forbiddenPair, pair) ||
+              equals(forbiddenPair, pair.reverse())
+          )
+        ) {
           return Infinity;
         }
 
@@ -141,14 +149,58 @@ const UniqueGrouping = (
     }
   }
 
-  return SimulatedAnnealing({
-    initialState: createRandomGroups(people, groupSize),
-    tempMax: TEMP_MAX,
-    tempMin: TEMP_MIN,
-    newState,
-    getTemp,
-    getEnergy
-  });
+  return new Promise((resolve, _) =>
+    resolve(
+      SimulatedAnnealing({
+        initialState: createRandomGroups(people, groupSize),
+        tempMax: TEMP_MAX,
+        tempMin: TEMP_MIN,
+        newState,
+        getTemp,
+        getEnergy
+      })
+    )
+  );
 };
 
-export default UniqueGrouping;
+const grade = (grouping, history, forbiddenPairs) =>
+  grouping.reduce((acc, group) => {
+    const groupSize = group.length;
+    if (groupSize < 2) {
+      return acc;
+    }
+    const cmb = Combinatorics.combination(group, 2).toArray();
+    const totalTimesSeen = cmb.reduce((acc, pair) => {
+      // functions
+      const historyOf = (person1, person2) =>
+        history
+          .flat()
+          .filter(group => group.includes(person1) && group.includes(person2))
+          .length;
+
+      // start of actual code
+      if (
+        forbiddenPairs.some(
+          forbiddenPair =>
+            equals(forbiddenPair, pair) || equals(forbiddenPair, pair.reverse())
+        )
+      ) {
+        console.log(
+          `FORBIDDEN PAIR DETECTED: ${person1} is paired with ${person2}`
+        );
+        return Infinity;
+      }
+
+      const [person1, person2] = pair;
+
+      const timesSeen = historyOf(person1, person2);
+
+      console.log(`${person1} has seen ${person2} ${timesSeen} time(s)`);
+
+      return acc + timesSeen;
+    }, 0);
+
+    return acc + totalTimesSeen;
+  }, 0);
+
+export { UniqueGrouping as default, grade };
