@@ -38,9 +38,8 @@ const UniqueGrouping = (
   const createRandomGroups = (people, groupSize) =>
     chunk(d3.shuffle(people), groupSize);
 
-  const getEnergy = v => {
-    console.log("getEnergy():", v);
-    const energy = v.reduce((acc, group) => {
+  const getEnergy = v =>
+    v.reduce((acc, group) => {
       // functions
       const cost = (groupSize, decays) =>
         BETA * groupSize ** 2 +
@@ -94,14 +93,8 @@ const UniqueGrouping = (
 
       return acc + cost(groupSize, decays);
     }, 0);
-    console.log("finished getEnergy():", v);
-    console.log("energy:", energy);
-    return energy;
-  };
 
   const newState = x => {
-    console.log("newState():", x);
-    const newState = clone(x);
     const swapPeople = (from, to) => {
       const person1 = randomArrayIndex(from);
       const person2 = randomArrayIndex(to);
@@ -114,6 +107,8 @@ const UniqueGrouping = (
 
       to.push(...from.splice(person, 1));
     };
+
+    const newState = clone(x);
 
     const randomGroup = uniqueRandomArray(
       newState.filter(group => !empty(group))
@@ -128,8 +123,6 @@ const UniqueGrouping = (
       swapPeople(from, to);
     }
 
-    console.log("finished newState():", x);
-    console.log("actual newState():", newState);
     return newState;
   };
 
