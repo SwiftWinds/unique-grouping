@@ -64,22 +64,6 @@ const UniqueGrouping = (
             .length;
 
           return { lastSeen, timesSeen };
-          //           const timesSeen = history
-          //             .flat()
-          //             .filter(arr => arr.includes(person1) && arr.includes(person2))
-          //             .length;
-          //           let timesSeen = 0;
-          //           const lastSeen;
-          //           for (let i = history.length; i >= 0; i--) {
-          //             if (
-          //               history[i].some(
-          //                 arr => arr.includes(person1) && arr.includes(person2)
-          //               )
-          //             ) {
-          //               timesSeen++;
-          // lastSeen = i;
-          //             }
-          //           }
         };
 
         if (forbiddenPairs.includes(pair)) {
@@ -96,34 +80,6 @@ const UniqueGrouping = (
 
       return acc + cost(groupSize, decays);
     }, 0);
-
-  // const getEnergy = v =>
-  //   sum(
-  //     v.map(group => {
-  //       const costFunction = group => {
-  //         const cmb = Combinatorics.combination(group, 2);
-  //         return sum(
-  //           ...cmb.map(pair => {
-  //             const decayFunction = (person1, person2) => {
-  //               const { timeSinceLastSeen, timesSeen } = person1.blacklist.find(
-  //                 person => person.id === person2.id
-  //               );
-
-  //               return (
-  //                 Math.exp(timeSinceLastSeen / (sessions + 1)) * (timesSeen + 1)
-  //               );
-  //             };
-
-  //             const [person1, person2] = pair;
-  //             return ALPHA * decayFunction(person1, person2);
-  //           }),
-  //           BETA * group.length
-  //         );
-  //       };
-
-  //       return costFunction(group);
-  //     })
-  //   );
 
   const newState = x => {
     const swapPeople = (from, to) => {
