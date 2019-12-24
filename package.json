@@ -41,6 +41,7 @@
   "dependencies": {
     "array-last": "^1.3.0",
     "chunk": "0.0.2",
+    "clone": "^2.1.2",
     "d3-array": "^2.4.0",
     "is-empty": "^1.2.0",
     "js-combinatorics": "^0.5.4",
@@ -48,7 +49,6 @@
     "npm": "^6.13.4",
     "random": "^2.1.1",
     "random-array-index": "^1.1.0",
-    "random-item": "^3.0.0",
     "simulated-annealing": "^1.0.2",
     "unique-random-array": "^2.0.0",
     "validate.io-positive-integer": "^1.0.0"

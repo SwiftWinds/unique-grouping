@@ -1,12 +1,12 @@
 const chunk = require("chunk");
-const mathSum = require("math-sum");
 const simulatedAnnealing = require("simulated-annealing");
 const { performance } = require("perf_hooks");
-const { boolean } = require("random");
+const rand = require("random");
 const findLastIndex = require("lodash.findlastindex");
 const empty = require("is-empty");
-
-console.log(boolean.random);
+const Combinatorics = require("js-combinatorics");
+const uniqueRandomArray = require("unique-random-array");
+// console.log(boolean.random);
 
 function getEnergy(v) {
   return Math.abs(v * v - 16);
@@ -73,7 +73,7 @@ console.log(Object.is(test1, test2));
 
 console.log(JSON.stringify(test1) === JSON.stringify(test2));
 
-console.log(mathSum(3, 5, 6, 1, 3));
+// console.log(mathSum(3, 5, 6, 1, 3));
 
 let people = [];
 
@@ -131,3 +131,61 @@ const lastSeen = empty(collisions)
 const timesSeen = collisions.filter(grouping => !empty(grouping)).length;
 
 console.log(Infinity * 3 - 229399293 ** 23);
+
+const testing = [1, 3, 87, 21, 5, 32];
+
+const person = 3;
+
+console.log(testing.splice(person));
+
+console.log(testing);
+
+const triot = [[3, 5], [], [2, 5, 1]];
+
+triot.forEach(tiot => {
+  // const cmb = Combinatorics.combination(tiot, 2);
+  // cmb.forEach(pair => console.log(pair));
+});
+
+const oof = [[], [3, 4], [1, 1, 3], [11, 1], []];
+
+const random = uniqueRandomArray(oof);
+
+console.log(random(), random(), random(), random(), random());
+
+console.log(oof);
+console.log(oof.filter(thing => !empty(thing)));
+console.log(oof);
+
+const testinglol = oof.filter(thing => !empty(thing));
+testinglol[1] = [0, 0, 0];
+
+console.log(oof);
+
+const lol = new Array(5000)
+for (let i = 0; i < 5000; i++) {
+  lol[i] = rand.boolean();
+}
+console.log(lol);
+let count = 0;
+lol.forEach(i => {
+  if (i) {
+    count++;
+  }
+});
+console.log(count);
+
+console.log(rand.boolean());
+console.log(rand.boolean());
+console.log(rand.boolean());
+console.log(rand.boolean());
+console.log(rand.boolean());
+console.log(rand.boolean());
+console.log(rand.boolean());
+console.log(rand.boolean());
+console.log(rand.boolean());
+console.log(rand.boolean());
+console.log(rand.boolean());
+console.log(rand.boolean());
+console.log(rand.boolean());
+
