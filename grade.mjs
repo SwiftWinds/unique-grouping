@@ -1,7 +1,7 @@
 import Combinatorics from "js-combinatorics";
 
-const grade = (grouping, history, forbiddenPairs) =>
-  grouping.reduce((acc, group) => {
+const grade = (group, history, forbiddenPairs) =>
+  group.reduce((acc, group) => {
     const groupSize = group.length;
     if (groupSize < 2) {
       return acc;
@@ -10,8 +10,8 @@ const grade = (grouping, history, forbiddenPairs) =>
     const totalTimesSeen = cmb.reduce((acc, pair) => {
       // functions
       const historyOf = (person1, person2) =>
-        history.filter(
-          grouping => grouping.includes(person1) && grouping.includes(person2)
+        history.flat().filter(
+          group => group.includes(person1) && group.includes(person2)
         ).length;
 
       // start of actual code

@@ -22,8 +22,8 @@ import uniqueRandomArray from "unique-random-array";
 import random from "random";
 import randomArrayIndex from "random-array-index";
 
-const TEMP_MAX = 50;
-const TEMP_MIN = 0.001;
+const TEMP_MAX = 65;
+const TEMP_MIN = 0.0007;
 const COOLING_RATE = 0.0002;
 const ALPHA = 1;
 const BETA = 1;
