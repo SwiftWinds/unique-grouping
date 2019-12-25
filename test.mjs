@@ -1,23 +1,7 @@
-# unique-grouping
-
-> Groups list of individuals into K unique groupings of N groups using simulated annealing.
-
-Please consider following this project's author, [SwiftWinds](https://github.com/SwiftWinds), and starring the project to show your ❤️ and support.
-
-## Installation
-
-Install with [npm](https://nodejs.org/en/download/):
-
-```bash
-$ npm install --save unique-grouping
-```
-
-## Usage
-
-```js
 import UniqueGrouping from "./index.mjs";
 
-const people = [ // people to group
+const people = [
+  // people to group
   "Alleson",
   "Brad",
   "Charlie",
@@ -38,7 +22,8 @@ const people = [ // people to group
   "Tom"
 ];
 
-const history = [ // previous groupings
+const history = [
+  // previous groupings
   [
     ["Harriet", "Karen", "Charlie", "Brad"],
     ["Nathan", "Rachel", "Ivan"],
@@ -56,21 +41,15 @@ const history = [ // previous groupings
 ];
 
 // people to be seperated at all costs
-const forbiddenPairs = [["Alleson", "Brad"], ["Fredric", "Tom"]];
+const forbiddenPairs = [
+  ["Alleson", "Brad"],
+  ["Fredric", "Tom"]
+];
 
 // target size of each group
 const groupSize = 4;
 
-// optional parameters
-const options = {
-    tempMax: 50,
-    tempMin: 0.001,
-    coolingRate: 0.0001,
-    alpha: 1,
-    beta: 1
-}
-
-UniqueGrouping(people, history, forbiddenPairs, groupSize, options).then(grouping => {
+UniqueGrouping(people, history, forbiddenPairs, groupSize).then(grouping => {
   console.log(grouping);
   //=> [
   //     [ 'Brad', 'Rachel', 'Laura', 'Fredric' ],
@@ -80,10 +59,3 @@ UniqueGrouping(people, history, forbiddenPairs, groupSize, options).then(groupin
   //     [ 'George', 'Karen', 'Stan' ]
   //   ]
 });
-```
-
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-## License
-[MIT](https://choosealicense.com/licenses/mit/)

@@ -24,17 +24,18 @@ import uniqueRandomArray from "unique-random-array";
 import random from "random";
 import randomArrayIndex from "random-array-index";
 
-const TEMP_MAX = 65;
-const TEMP_MIN = 0.0007;
-const COOLING_RATE = 0.0002;
-const ALPHA = 1;
-const BETA = 1;
-
 const UniqueGrouping = (
   people = [],
   history = [],
   forbiddenPairs = [],
-  groupSize
+  groupSize,
+  options = {
+    tempMax: 65,
+    tempMin: 0.0007,
+    coolingRate: 0.0002,
+    alpha: 1,
+    beta: 1
+  }
 ) => {
   // creates random groups of size groupSize
   const createRandomGroups = (people, groupSize) =>
@@ -44,8 +45,8 @@ const UniqueGrouping = (
     v.reduce((acc, group) => {
       // functions
       const cost = (groupSize, decays) =>
-        BETA * groupSize ** 2 +
-        decays.reduce((acc, decay) => acc + decay * ALPHA, 0);
+        beta * groupSize ** 2 +
+        decays.reduce((acc, decay) => acc + decay * alpha, 0);
 
       const decay = (n, t, k) => n / (1 + (t / k) ** 2);
 
@@ -135,7 +136,9 @@ const UniqueGrouping = (
   };
 
   // linear decreasing temperature
-  const getTemp = prevTemp => prevTemp - COOLING_RATE;
+  const getTemp = prevTemp => prevTemp - coolingRate;
+
+  const { tempMax, tempMin, coolingRate, alpha, beta } = options;
 
   if (!isPositiveInteger(groupSize)) {
     throw new Error("groupSize must be an integer greater than 0");
@@ -153,8 +156,8 @@ const UniqueGrouping = (
     resolve(
       SimulatedAnnealing({
         initialState: createRandomGroups(people, groupSize),
-        tempMax: TEMP_MAX,
-        tempMin: TEMP_MIN,
+        tempMax,
+        tempMin,
         newState,
         getTemp,
         getEnergy
