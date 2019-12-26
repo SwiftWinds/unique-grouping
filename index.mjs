@@ -20,6 +20,8 @@ import clone from "clone";
 
 import equals from "array-equal";
 
+import trimNewlines from "trim-newlines";
+
 import uniqueRandomArray from "unique-random-array";
 import random from "random";
 import randomArrayIndex from "random-array-index";
@@ -166,14 +168,15 @@ const UniqueGrouping = (
   );
 };
 
-const grade = (grouping, history, forbiddenPairs) =>
-  grouping.reduce((acc, group) => {
+const grade = (grouping, history, forbiddenPairs) => {
+  let log = "";
+  const totalTimesSeen = grouping.reduce((acc, group) => {
     const groupSize = group.length;
     if (groupSize < 2) {
       return acc;
     }
-    const cmb = Combinatorics.combination(group, 2).toArray();
-    const totalTimesSeen = cmb.reduce((acc, pair) => {
+    const cmb = Combinatorics.combination(group, 2);
+    const timesSeenOfGroup = cmb.reduce((acc, pair) => {
       // functions
       const historyOf = (person1, person2) =>
         history
@@ -188,9 +191,7 @@ const grade = (grouping, history, forbiddenPairs) =>
             equals(forbiddenPair, pair) || equals(forbiddenPair, pair.reverse())
         )
       ) {
-        console.log(
-          `FORBIDDEN PAIR DETECTED: ${person1} is paired with ${person2}`
-        );
+        log += `FORBIDDEN PAIR DETECTED: ${person1} is paired with ${person2}\n`;
         return Infinity;
       }
 
@@ -198,12 +199,14 @@ const grade = (grouping, history, forbiddenPairs) =>
 
       const timesSeen = historyOf(person1, person2);
 
-      console.log(`${person1} has seen ${person2} ${timesSeen} time(s)`);
+      log += `${person1} has seen ${person2} ${timesSeen} time(s)\n`;
 
       return acc + timesSeen;
     }, 0);
 
-    return acc + totalTimesSeen;
+    return acc + timesSeenOfGroup;
   }, 0);
+  return { log: trimNewlines.end(log), totalTimesSeen };
+};
 
 export { UniqueGrouping as default, grade };
