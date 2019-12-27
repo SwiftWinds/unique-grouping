@@ -20,7 +20,7 @@ import clone from "clone";
 
 import equals from "array-equal";
 
-import trimNewlines from "trim-newlines";
+import StringBuilder from "yassb";
 
 import uniqueRandomArray from "unique-random-array";
 import random from "random";
@@ -169,7 +169,7 @@ const UniqueGrouping = (
 };
 
 const grade = (grouping, history, forbiddenPairs) => {
-  let log = "";
+  const sb = new StringBuilder();
   const totalTimesSeen = grouping.reduce((acc, group) => {
     const groupSize = group.length;
     if (groupSize < 2) {
@@ -191,7 +191,9 @@ const grade = (grouping, history, forbiddenPairs) => {
             equals(forbiddenPair, pair) || equals(forbiddenPair, pair.reverse())
         )
       ) {
-        log += `FORBIDDEN PAIR DETECTED: ${person1} is paired with ${person2}\n`;
+        sb.addLine(
+          `FORBIDDEN PAIR DETECTED: ${person1} is paired with ${person2}`
+        );
         return Infinity;
       }
 
@@ -199,14 +201,15 @@ const grade = (grouping, history, forbiddenPairs) => {
 
       const timesSeen = historyOf(person1, person2);
 
-      log += `${person1} has seen ${person2} ${timesSeen} time(s)\n`;
+      sb.addLine(`${person1} has seen ${person2} ${timesSeen} time(s)`);
 
       return acc + timesSeen;
     }, 0);
 
     return acc + timesSeenOfGroup;
   }, 0);
-  return { log: trimNewlines.end(log), totalTimesSeen };
+  const log = sb.toString();
+  return { log, totalTimesSeen };
 };
 
 export { UniqueGrouping as default, grade };
