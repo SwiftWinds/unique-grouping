@@ -15,7 +15,7 @@ $ npm install --save unique-grouping
 ## Usage
 
 ```js
-import UniqueGrouping, { grade } from "./index.mjs";
+import UniqueGrouping, { grade } from "unique-grouping";
 
 const people = [ // people to group
   "Alleson",
