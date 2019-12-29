@@ -18,7 +18,7 @@ import d3 from "d3-array";
 
 import clone from "clone";
 
-import equals from "array-equal";
+import equal from "fast-deep-equal";
 
 import StringBuilder from "yassb";
 
@@ -39,7 +39,7 @@ const UniqueGrouping = (
     beta: 1
   }
 ) => {
-  // creates random groups of size groupSize
+  // functions
   const createRandomGroups = (people, groupSize) =>
     chunk(d3.shuffle(people), groupSize);
 
@@ -66,8 +66,9 @@ const UniqueGrouping = (
           // start of actual code
           const collisions = history.map(grouping =>
             grouping.filter(
-              // TODO: check if safer to do `.some(person => person.id === person1.id) && .some(person => person.id === person2.id)`?
-              group => group.includes(person1) && group.includes(person2)
+              group =>
+                group.some(person => equal(person, person1)) &&
+                group.some(person => equal(person, person2))
             )
           );
 
@@ -87,8 +88,7 @@ const UniqueGrouping = (
         if (
           forbiddenPairs.some(
             forbiddenPair =>
-              equals(forbiddenPair, pair) ||
-              equals(forbiddenPair, pair.reverse())
+              equal(forbiddenPair, pair) || equal(forbiddenPair, pair.reverse())
           )
         ) {
           return Infinity;
@@ -106,6 +106,7 @@ const UniqueGrouping = (
     }, 0);
 
   const newState = x => {
+    // functions
     const swapPeople = (from, to) => {
       const person1 = randomArrayIndex(from);
       const person2 = randomArrayIndex(to);
@@ -119,6 +120,7 @@ const UniqueGrouping = (
       to.push(...from.splice(person, 1));
     };
 
+    // start of actual code
     const newState = clone(x);
 
     const randomGroup = uniqueRandomArray(
@@ -137,9 +139,9 @@ const UniqueGrouping = (
     return newState;
   };
 
-  // linear decreasing temperature
-  const getTemp = prevTemp => prevTemp - coolingRate;
+  const getTemp = prevTemp => prevTemp - coolingRate; // linear decreasing temperature
 
+  // start of actual code
   const { tempMax, tempMin, coolingRate, alpha, beta } = options;
 
   if (!isPositiveInteger(groupSize)) {
@@ -181,18 +183,21 @@ const grade = (grouping, history, forbiddenPairs) => {
       const historyOf = (person1, person2) =>
         history
           .flat()
-          .filter(group => group.includes(person1) && group.includes(person2))
-          .length;
+          .filter(
+            group =>
+              group.some(person => equal(person, person1)) &&
+              group.some(person => equal(person, person2))
+          ).length;
 
       // start of actual code
       if (
         forbiddenPairs.some(
           forbiddenPair =>
-            equals(forbiddenPair, pair) || equals(forbiddenPair, pair.reverse())
+            equal(forbiddenPair, pair) || equal(forbiddenPair, pair.reverse())
         )
       ) {
         sb.addLine(
-          `FORBIDDEN PAIR DETECTED: ${person1} is paired with ${person2}`
+          `FORBIDDEN PAIR DETECTED: ${person1} is with ${person2}`
         );
         return Infinity;
       }

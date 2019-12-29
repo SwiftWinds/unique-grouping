@@ -1,3 +1,5 @@
+"use strict";
+
 import UniqueGrouping, { grade } from "./index.mjs";
 
 const people = [
