@@ -1,6 +1,6 @@
 {
   "name": "unique-grouping",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Groups list of individuals in K unique groupings of N groups using simulated annealing",
   "main": "index.mjs",
   "scripts": {
@@ -13,10 +13,13 @@
   "keywords": [
     "simulated",
     "annealing",
-    "simulated",
-    "annealing",
     "optimization",
+    "optimizations",
+    "unique",
+    "groupings",
+    "grouping",
     "group",
+    "groups",
     "students",
     "such",
     "that",
@@ -24,8 +27,6 @@
     "works",
     "with",
     "everyone",
-    "unique",
-    "groupings",
     "Kirkman's",
     "schoolgirl",
     "problem",
