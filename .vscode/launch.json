@@ -7,11 +7,10 @@
     {
       "type": "node",
       "request": "launch",
-      "protocol": "inspector",
-      "name": "Launch",
+      "name": "Launch Program",
       "program": "${workspaceFolder}/test.mjs",
-      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node",
-      "runtimeArgs": ["--presets", "env"]
+      "runtimeArgs": ["--experimental-modules"],
+      "skipFiles": ["<node_internals>/**"]
     }
   ]
 }

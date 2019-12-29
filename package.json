@@ -1,11 +1,9 @@
 {
   "name": "unique-grouping",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Groups list of individuals in K unique groupings of N groups using simulated annealing",
   "main": "index.mjs",
   "scripts": {
-    "start": "babel-node test.js",
-    "debug": "babel-node debug test.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -57,10 +55,5 @@
     "unique-random-array": "^2.0.0",
     "validate.io-positive-integer": "^1.0.0",
     "yassb": "^1.0.5"
-  },
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-preset-env": "^1.7.0"
   }
 }
