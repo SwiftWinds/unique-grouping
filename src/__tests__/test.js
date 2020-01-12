@@ -1,6 +1,6 @@
 "use strict";
 
-import UniqueGrouping, { grade } from "./index.mjs";
+import UniqueGrouping, { grade } from "../index.js";
 
 const people = [
   // people to group

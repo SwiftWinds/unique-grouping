@@ -2,9 +2,12 @@
   "name": "unique-grouping",
   "version": "1.2.3",
   "description": "Groups list of individuals in K unique groupings of N groups using simulated annealing",
-  "main": "index.mjs",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "pika build",
+    "prepublish": "npm run build",
+    "publish": "pika publish",
+    "version": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -56,5 +59,34 @@
     "unique-random-array": "^2.0.0",
     "validate.io-positive-integer": "^1.0.0",
     "yassb": "^1.0.7"
+  },
+  "devDependencies": {
+    "@pika/cli": "^0.2.0",
+    "@pika/pack": "^0.5.0",
+    "@pika/plugin-standard-pkg": "^0.8.1",
+    "@pika/plugin-build-node": "^0.8.1",
+    "@pika/plugin-build-web": "^0.8.1",
+    "pika-plugin-minify": "^0.1.0"
+  },
+  "@pika/pack": {
+    "pipeline": [
+      [
+        "@pika/plugin-standard-pkg",
+        {
+          "exclude": [
+            "__tests__/**/*"
+          ]
+        }
+      ],
+      [
+        "@pika/plugin-build-node"
+      ],
+      [
+        "@pika/plugin-build-web"
+      ],
+      [
+        "pika-plugin-minify"
+      ]
+    ]
   }
 }
