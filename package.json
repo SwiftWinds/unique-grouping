@@ -52,20 +52,20 @@
     "is-empty": "^1.2.0",
     "js-combinatorics": "^0.5.5",
     "lodash.findlastindex": "^4.6.0",
-    "npm": "^6.13.6",
+    "npm": "^6.13.7",
     "random": "^2.1.1",
     "random-array-index": "^1.1.0",
     "simulated-annealing": "^1.0.2",
     "unique-random-array": "^2.0.0",
     "validate.io-positive-integer": "^1.0.0",
-    "yassb": "^1.0.7"
+    "yassb": "^1.1.1"
   },
   "devDependencies": {
     "@pika/cli": "^0.2.0",
     "@pika/pack": "^0.5.0",
-    "@pika/plugin-standard-pkg": "^0.8.1",
-    "@pika/plugin-build-node": "^0.8.1",
-    "@pika/plugin-build-web": "^0.8.1",
+    "@pika/plugin-standard-pkg": "^0.9.2",
+    "@pika/plugin-build-node": "^0.9.2",
+    "@pika/plugin-build-web": "^0.9.2",
     "pika-plugin-minify": "^0.1.0"
   },
   "@pika/pack": {
